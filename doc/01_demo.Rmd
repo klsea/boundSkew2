@@ -1,0 +1,38 @@
+---
+title: "Demographics - boundSkew2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
+source('../02_demographic_data.R')
+```
+
+### _N_ = `r demo[1]`
+
+### Age
+```{r Age, echo = FALSE}
+hist(dt$Age)
+```
+
+_M(SD)_ = `r round(demo[2],2)` (`r round(demo[3],2)`)  
+Range = `r demo[4]` - `r demo[5]`
+
+### Gender
+```{r Gender, echo = FALSE}
+pie(table(dt$Gender))
+knitr::kable(table(dt$Gender)) %>% kable_styling(full_width = F)
+```
+
+### Race
+```{r Race, echo = FALSE}
+pie(table(dt$Race))
+knitr::kable(table(dt$Race)) %>% kable_styling(full_width = F)
+```
+
+### Education
+```{r Education, echo = FALSE}
+pie(table(dt$Education))
+knitr::kable(table(dt$Education)) %>% kable_styling(full_width = F)
+```

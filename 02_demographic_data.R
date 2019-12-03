@@ -28,8 +28,10 @@ dt$Education <- as.character(dt$Education)
 dt$Education <- recode(dt$Education, "1" = "Middle School", "2" = "High School Diploma", 
                        "3" = "Some College", "4" = "Bachelor's Degree", "5" = "Master's Degree", 
                        "6" = "Doctoral Degree" )
+dt$Education <- ordered(dt$Education, levels = c("Middle School", "High School Diploma", 
+                                               "Some College", "Bachelor's Degree", 
+                                               "Master's Degree", "Doctoral Degree"))
 table(dt$Education)
-
 
 #Race
 dt$Race <- as.character(dt$Race)

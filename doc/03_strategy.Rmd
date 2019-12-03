@@ -1,0 +1,107 @@
+---
+title: "Strategy - boundSkew2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
+library(Hmisc)
+source('../05_graph_strategy.R')
+```
+
+All items are a Likert scale:  
+1 - Strongly disagree  
+2 - Somewhat disagree  
+3 - Neutral  
+4 - Somewhat agree  
+5 - Strongly agree  
+
+## Group Means
+``` {r means, echo = FALSE}
+means
+```
+
+#### - More people used a mathematical strategy compared to going with their gut.
+```{r compare general, echo = FALSE, comment = ''}
+gutvmath
+```
+
+#### - People were more likely to focus om winning compared to losing.
+#### - People were more likely to focus on the monetary amount instead of the likelihood of winning or losing.
+#### - No interaction between valence (win vs loss) and parameter (magnitude or probability)
+```{r compare info, echo = FALSE, comment = ''}
+summary(valvparam)
+```
+
+## General Strategies
+
+### "I tried to solve the task on a gut level."
+```{r Gut, echo = FALSE, warning=FALSE} 
+gut_color <- colorize_variable(d0$gut)
+p1 <- ggplot(d0, aes(Age, gut))
+p2 <- ggplot(d0, aes(gut, fill = gut_color))
+fancy_graph(p1,p2, gut_color, 'Gut Feeling')
+```
+
+#### Age: _r_ = `r round(rcorr(d0$Age, d0$gut)$r[2],3) `, _p_ = `r round(rcorr(d0$Age, d0$gut)$P[2], 3)`
+
+### "I tried to solve the task mathematically."
+```{r Math, echo = FALSE, warning=FALSE} 
+math_color <- colorize_variable(d0$math)
+p1 <- ggplot(d0, aes(Age, math))
+p2 <- ggplot(d0, aes(math, fill = math_color))
+fancy_graph(p1,p2, math_color, 'Mathematically')
+```
+
+#### Age: _r_ = `r round(rcorr(d0$Age, d0$math)$r[2],3) `, _p_ = `r round(rcorr(d0$Age, d0$math)$P[2], 3)`
+
+## Information Strategies
+
+### "I tried to solve the task by focusing on how much money I could win."
+```{r money win, echo = FALSE, warning=FALSE} 
+win.money_color <- colorize_variable(d0$win.money)
+p1 <- ggplot(d0, aes(Age, win.money))
+p2 <- ggplot(d0, aes(win.money, fill = win.money_color))
+fancy_graph(p1,p2, win.money_color, 'Win Money')
+```
+
+#### Age: _r_ = `r round(rcorr(d0$Age, d0$win.money)$r[2],3) `, _p_ = `r round(rcorr(d0$Age, d0$win.money)$P[2], 3)`
+
+### "I tried to solve the task by focusing on how much money I could lose."
+```{r money lose, echo = FALSE, warning=FALSE} 
+lose.money_color <- colorize_variable(d0$lose.money)
+p1 <- ggplot(d0, aes(Age, lose.money))
+p2 <- ggplot(d0, aes(lose.money, fill = lose.money_color))
+fancy_graph(p1,p2, lose.money_color, 'Lose Money')
+```
+
+#### Age: _r_ = `r round(rcorr(d0$Age, d0$lose.money)$r[2],3) `, _p_ = `r round(rcorr(d0$Age, d0$lose.money)$P[2], 3)`
+
+### "I tried to solve the task by focusing on how likely it was that I would win."
+```{r win likely, echo = FALSE, warning=FALSE} 
+win.likely_color <- colorize_variable(d0$win.likely)
+p1 <- ggplot(d0, aes(Age, win.likely))
+p2 <- ggplot(d0, aes(win.likely, fill = win.likely_color))
+fancy_graph(p1,p2, win.likely_color, 'Win Likely')
+```
+
+#### Age: _r_ = `r round(rcorr(d0$Age, d0$win.likely)$r[2],3) `, _p_ = `r round(rcorr(d0$Age, d0$win.likely)$P[2], 3)`
+
+### "I tried to solve the task by focusing on how likely it was that I would lose."
+```{r lose likely, echo = FALSE, warning=FALSE} 
+lose.likely_color <- colorize_variable(d0$lose.likely)
+p1 <- ggplot(d0, aes(Age, lose.likely))
+p2 <- ggplot(d0, aes(lose.likely, fill = lose.likely_color))
+fancy_graph(p1,p2, lose.likely_color, 'Lose Likely')
+```
+
+#### Age: _r_ = `r round(rcorr(d0$Age, d0$lose.likely)$r[2],3) `, _p_ = `r round(rcorr(d0$Age, d0$lose.likely)$P[2], 3)`
+
+## Gut v Money by Age
+```{r, echo = FALSE}
+ggplot(d0, aes(Age, diffstrategy)) + geom_point() + geom_smooth(method = 'lm', fill = 'Blue') +
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2), color = 'Red', fill = 'Red') 
+```
+
+#### Age: _r_ = `r round(rcorr(d0$Age, d0$diffstrategy)$r[2],3) `, _p_ = `r round(rcorr(d0$Age, d0$diffstrategy)$P[2], 3)`
