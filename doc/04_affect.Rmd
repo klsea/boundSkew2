@@ -1,0 +1,14 @@
+---
+title: "Affect - boundSkew2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
+source('../06_graph_affect.R')
+```
+
+```{r graph, echo = FALSE}
+affect
+```

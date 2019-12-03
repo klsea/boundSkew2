@@ -1,0 +1,38 @@
+---
+title: "05_Cognitive"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
+library(Hmisc)
+source('../07_graph_cognitive.R')
+```
+
+## Subjective Graph Literacy
+
+```{r sgl frequency, echo = FALSE}
+sgl1
+```
+
+#### SGL scores ranged from `r range(d1$graph_lit)[1]` to `r range(d1$graph_lit)[2]` with an average score of `r round(mean(d1$graph_lit))` (red dotted line).
+
+```{r sgl age, echo = FALSE}
+sgl2
+```
+
+#### There was no significant relationship between age and graph literacy, _r_ = `r round(rcorr(d1$Age, d1$graph_lit)$r[2], 3)`, _p_ = `r round(rcorr(d1$Age, d1$graph_lit)$P[2], 3)`  
+
+## Numeracy
+```{r num frequency, echo = FALSE}
+num1
+```
+
+#### Numeracy scores ranged from `r range(d3$Numeracy)[1]` to `r range(d3$Numeracy)[2]` with an average score of `r round(mean(d3$Numeracy))` (red dotted line).
+
+```{r num age, echo = FALSE}
+num2
+```
+
+#### There was a significant increase in numeracy with age, _r_ = `r round(rcorr(d3$Age, d3$Numeracy)$r[2], 3)`, _p_ = `r round(rcorr(d3$Age, d3$Numeracy)$P[2], 3)`. 

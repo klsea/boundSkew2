@@ -21,3 +21,21 @@ fancy_graph <- function(plot1, plot2, colorvar, ylabel) {
 }
 
 
+colorize_variable7 <- function(variable) {
+  new_variable <- factor(variable)
+  levels(new_variable)[1] <- 'Not at all'
+  levels(new_variable)[2] <- '2'
+  levels(new_variable)[3] <- '3'
+  levels(new_variable)[4] <- '4'
+  levels(new_variable)[5] <- '5'
+  levels(new_variable)[5] <- '6'
+  levels(new_variable)[5] <- 'Very'
+  return(new_variable)
+}
+
+colorize_variable2 <- function(variable) {
+  new_variable <- factor(variable)
+  levels(new_variable)[1] <- 'Yes'
+  levels(new_variable)[2] <- 'No'
+  return(new_variable)
+}

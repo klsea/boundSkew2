@@ -4,6 +4,7 @@
 # load required packages
 library(here)
 library(ggplot2)
+library(tidyr)
 
 # load source functions
 source(here('scr', 'isolate_skew.R'))
@@ -44,7 +45,7 @@ d2$names <- c('low arousal - positive', 'high arousal - positive', 'low arousal'
 d2$names <- factor(d2$names, levels =c('low arousal', 'low arousal - negative', 'low arousal - positive', 
                                           'high arousal','high arousal -negative', 'high arousal - positive'))
 
-ggplot(d2, aes(names, Mean, fill = names)) + geom_bar(stat='identity') + annotate("text", x=1, y=0, label="Never") + 
+affect <- ggplot(d2, aes(names, Mean, fill = names)) + geom_bar(stat='identity') + annotate("text", x=1, y=0, label="Never") + 
   annotate("text", x=1, y=5, label="All the time") + 
   geom_errorbar(aes(ymin = Mean-SE, ymax = Mean + SE), width = .2, position=position_dodge(.9)) +
   theme_minimal() + theme(legend.position = 'none', axis.text.x  = element_text(angle=90, vjust=0.5, size = 10)) + xlab("Affect") + ylab('Average Rating') +

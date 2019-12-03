@@ -1,0 +1,77 @@
+---
+title: "Real World - boundSkew2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
+library(Hmisc)
+source('../08_graph_real_world.R')
+```
+
+## Investments
+
+``` {r invest1, echo = FALSE}
+invest1
+```
+
+### Most participants (_N_ = `r n_lost_invest` / `r n_total`) have lost money in an investment, but ...
+
+``` {r why loss, echo = FALSE}
+invest2
+```
+
+### only a small proportion (_N_ = `r n_fraud` / `r n_lost_invest`) attribute this to fraud.
+
+## Susceptibility to Fraud
+
+### While most people are ambivalent about their ability to detect fraud, 
+
+``` {r detect, echo = FALSE}
+fraud1
+```
+
+### most are confident that they can avoid fraudulent investments
+
+``` {r fraud, echo = FALSE}
+fraud2
+```
+
+### and resist high-pressure sales tactics.
+
+``` {r pressure, echo = FALSE}
+fraud3
+```
+
+## Age effects
+
+### "How able are you to detect a fraudulent investment?"
+```{r detect age, echo = FALSE, warning=FALSE} 
+detect_color <- colorize_variable7(d3$detect_fraud)
+p1 <- ggplot(d3, aes(Age, detect_fraud)) + geom_point()
+p2 <- ggplot(d3, aes(detect_fraud, fill = detect_color))
+fancy_graph(p1,p2, detect_color, 'Detect Fraud Investment')
+```
+
+#### Age: _r_ = `r round(rcorr(d3$Age, d3$detect_fraud)$r[2],3) `, _p_ = `r round(rcorr(d3$Age, d3$detect_fraud)$P[2], 3)`
+
+### "How likely are you to make a fraudulent investment?"
+```{r likely age, echo = FALSE, warning=FALSE} 
+likely_color <- colorize_variable7(d3$likely_fraud)
+p1 <- ggplot(d3, aes(Age, likely_fraud)) + geom_point()
+p2 <- ggplot(d3, aes(likely_fraud, fill = likely_color))
+fancy_graph(p1,p2, likely_color, 'Likely to make  Fraud Investment')
+```
+
+#### Age: _r_ = `r round(rcorr(d3$Age, d3$likely_fraud)$r[2],3) `, _p_ = `r round(rcorr(d3$Age, d3$likely_fraud)$P[2], 3)`
+
+### How able are you to resist high-pressure sales tactics when buying investments?"
+```{r high pressure age, echo = FALSE, warning=FALSE} 
+hp_color <- colorize_variable7(d3$high_pressure)
+p1 <- ggplot(d3, aes(Age, high_pressure)) + geom_point()
+p2 <- ggplot(d3, aes(high_pressure, fill = hp_color))
+fancy_graph(p1,p2, hp_color, 'Resist High Pressure Sales')
+```
+
+#### Age: _r_ = `r round(rcorr(d3$Age, d3$high_pressure)$r[2],3) `, _p_ = `r round(rcorr(d3$Age, d3$high_pressure)$P[2], 3)`
