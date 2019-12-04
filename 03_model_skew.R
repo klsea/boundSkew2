@@ -17,7 +17,8 @@ source(here('scr', 'SummarySE.R'))
 dt <- read.csv(here("data", "bound_skew2_data.csv"))
 
 # separate skew
-d0 <- isolate_skew(dt,c(1,2),grep('X0', colnames(dt))[1]:grep('CATCH2.4', colnames(dt))) # no symmetric trials here
+d0 <- isolate_skew(dt, c(1,2), 
+                   grep('X0', colnames(dt))[1]:grep('CATCH2.4', colnames(dt))) # no symmetric trials here
 d1 <- clean_skew(d0)
 
 # recode response to acceptance

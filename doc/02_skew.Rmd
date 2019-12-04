@@ -1,0 +1,76 @@
+---
+title: "skew - boundSkew2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
+source('../01_graph_skew.R')
+```
+
+## Degree of Skewness
+```{r skewness, echo = FALSE, fig.align = 'center'}
+p1
+```
+
+#### With an increase in skewness from weak to strong, gamble acceptance decreases.
+
+```{r baseline, echo = FALSE} 
+base <- readRDS('../output/baseline.RDS')
+knitr::kable(summary(base)$coefficients) %>% 
+  kable_styling(full_width = F) %>%
+  row_spec(2:3, bold = T, background = 'yellow')
+```
+
+## Valence
+```{r valence, echo = FALSE, fig.align = 'center'}
+p4
+```
+
+#### The acceptance rates for strongly-skewed losses is lower than other loss gambles. 
+
+```{r m1, echo = FALSE} 
+m1 <- readRDS('../output/m1.RDS')
+knitr::kable(summary(m1)$coefficients) %>% 
+  kable_styling(full_width = F) %>%
+  row_spec(9, bold = T, background = 'yellow')
+```
+
+## Magnitude
+```{r magnitude, echo = FALSE, fig.align = 'center'}
+p5
+```
+
+#### There is no effect of gamble magnitude on gamble acceptance. 
+
+```{r m2, echo = FALSE} 
+m2 <- readRDS('../output/m2.RDS')
+knitr::kable(summary(m2)$coefficients) %>% 
+  kable_styling(full_width = F) 
+```
+
+## Magnitude and valence
+
+#### Although a model containing the interaction between magnitude and valence (m3) provides a better fit to the data than a model with valence alone (m1), the model results are somewhat difficult to interpret. 
+
+``` {r model compare, echo = FALSE}
+m1 <- readRDS('../output/m1.RDS')
+m3 <- readRDS('../output/m3.RDS')
+knitr::kable(anova(m1, m3)) %>% 
+  kable_styling(full_width = F) 
+```
+
+#### For losses of \$.50, strongly-skewed gambles are selected less often than other gambles. 
+
+```{r mag and val, echo = FALSE, fig.align = 'center'}
+p2
+```
+
+
+```{r model 3, echo = FALSE} 
+m3 <- readRDS('../output/m3.RDS')
+knitr::kable(summary(m3)$coefficients) %>% 
+  kable_styling(full_width = F) %>%
+  row_spec(11, bold = T, background = 'yellow')
+```

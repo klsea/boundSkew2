@@ -4,6 +4,7 @@
 # load required packages
 library(here)
 library(ggplot2)
+library(gdata)
 
 # load source functions
 source(here('scr', 'isolate_skew.R'))
@@ -48,14 +49,14 @@ p1 <- ggplot(d2, aes(deg_skew, accept, fill = deg_skew)) + geom_bar(position=pos
 # create summary - add interaction with valence of gamble
 d3 <- summarySE(data=d1, measurevar = 'accept', groupvars=c('valence','deg_skew'))
 
-ggplot(d3, aes(valence, accept, fill = deg_skew)) + geom_bar(position=position_dodge(), stat='identity') + 
+p4 <- ggplot(d3, aes(valence, accept, fill = deg_skew)) + geom_bar(position=position_dodge(), stat='identity') + 
   geom_errorbar(aes(ymin=accept - se, ymax = accept + se), width = .2, position=position_dodge(.9)) + 
   theme(legend.position = 'top') + scale_fill_manual(values = colors) + scale_colour_manual(values=colors)
 
 # create summary - add interaction with magnitude of gamble
 d4 <- summarySE(data=d1, measurevar = 'accept', groupvars=c('magnitude','deg_skew'))
 
-ggplot(d4, aes(magnitude, accept, fill = deg_skew)) + geom_bar(position=position_dodge(), stat='identity') + 
+p5 <- ggplot(d4, aes(magnitude, accept, fill = deg_skew)) + geom_bar(position=position_dodge(), stat='identity') + 
   geom_errorbar(aes(ymin=accept - se, ymax = accept + se), width = .2, position=position_dodge(.9)) + 
   theme(legend.position = 'top') + scale_fill_manual(values = colors) + scale_colour_manual(values=colors)
 
@@ -91,6 +92,7 @@ p3 <- multiplot(p1, p2, layout = matrix(c(1,2,2,2), nrow=1, byrow=TRUE))
 
 #ggsave("deg_skew_plot1.pdf", plot = p3, device="pdf", path="figs/")
 
-pdf('figs/deg_skew_plot2.pdf')
-multiplot(p1, p2, layout = matrix(c(1,2,2,2), nrow=1, byrow=TRUE))
-dev.off()
+#pdf('figs/deg_skew_plot2.pdf')
+#multiplot(p1, p2, layout = matrix(c(1,2,2,2), nrow=1, byrow=TRUE))
+#dev.off()
+
