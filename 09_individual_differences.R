@@ -11,6 +11,7 @@ source(here('scr', 'isolate_skew.R'))
 source(here('scr', 'isolate_measure.R'))
 source(here('scr', 'clean_skew.R'))
 source(here('scr', 'count_skew.R'))
+source(here('scr', 'corrTableCI.R'))
 
 # set hard-coded variables
 
@@ -86,9 +87,11 @@ d7 <- merge(d6, d2, by = 'ID')
 rm(d1,d2,d6)
 
 # correlations
-end <- ncol(d7)
-s2_corr <- rcorr(as.matrix(d7[5:end]))
-saveRDS(s2_corr, here('output', 's1_corr.RDS'))
+end <- ncol(d7)-1
+s2_corr <- rcorr(as.matrix(d7[c(5:20, 22:end)]))
+saveRDS(s2_corr, here('output', 's2_corr.RDS'))
+s2_corrCI <- corrTableCI(d7[c(5:20, 22:end)])
+saveRDS(s2_corrCI, here('output', 's2_corrCI.RDS'))
 
 # models - strategy
 d7$magval <- interaction(d7$magnitude, d7$valence)

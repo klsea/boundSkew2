@@ -14,7 +14,7 @@ source('../01_graph_skew.R')
 p1
 ```
 
-#### With an increase in skewness from weak to strong, gamble acceptance decreases.
+#### With an increase in skewness from weak to strong, gamble acceptance _decreases._
 
 ```{r baseline, echo = FALSE} 
 base <- readRDS('../output/baseline.RDS')

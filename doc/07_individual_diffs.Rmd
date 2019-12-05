@@ -1,0 +1,62 @@
+---
+title: "Individual Differences - boundSkew2"
+author: "Kendra Seaman"
+date: "12/5/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source('../09_individual_differences.R')
+library(kableExtra)
+library(ggplot2)
+```
+
+## Correlations with Acceptance of Skewed Gambles
+
+```{r correlations, echo = FALSE}
+ctable <- readRDS('../output/s2_corrCI.RDS')
+knitr::kable(ctable[2:nrow(ctable),1:2])  %>% 
+  kable_styling(full_width = F) %>%
+  row_spec(c(3, 5, 7, 12, 14), bold = T, background = 'yellow')
+```
+
+### "I tried to solve the task by focusing on how much money I could win."
+```{r graph win.money, echo = FALSE}
+ggplot(d7, aes(win.money, skew_count)) + theme_minimal() +
+  geom_jitter(alpha=0.2, width = 0.2, height = 0.2) +
+  geom_smooth(method = lm, color = 'blue', fill = 'blue' ) + 
+  scale_y_continuous(breaks=seq(0,9,3))
+```
+
+### "I tried to solve the task by focusing on how likely it was that I would win"
+```{r graph win.likely, echo = FALSE}
+ggplot(d7, aes(win.likely, skew_count)) + theme_minimal() +
+  geom_jitter(alpha=0.2, width = 0.2, height = 0.2) +
+  geom_smooth(method = lm, color = 'blue', fill = 'blue' ) + 
+  scale_y_continuous(breaks=seq(0,9,3))
+```
+
+### High Arousal - Positive
+```{r graph hap, echo = FALSE}
+ggplot(d7, aes(hap, skew_count)) + theme_minimal() +
+  geom_jitter(alpha=0.2, width = 0.2, height = 0.2) +
+  geom_smooth(method = lm, color = 'blue', fill = 'blue' ) + 
+  scale_y_continuous(breaks=seq(0,9,3))
+```
+
+### High Arousal
+```{r graph ha, echo = FALSE}
+ggplot(d7, aes(ha, skew_count)) + theme_minimal() +
+  geom_jitter(alpha=0.2, width = 0.2, height = 0.2) +
+  geom_smooth(method = lm, color = 'blue', fill = 'blue' ) + 
+  scale_y_continuous(breaks=seq(0,9,3))
+```
+
+### Numeracy
+```{r graph numeracy, echo = FALSE}
+ggplot(d7, aes(Numeracy, skew_count)) + theme_minimal() +
+  geom_jitter(alpha=0.2, width = 0.2, height = 0.2) +
+  geom_smooth(method = lm, color = 'blue', fill = 'blue' ) + 
+  scale_y_continuous(breaks=seq(0,9,3))
+```
