@@ -43,8 +43,9 @@ d2 <- summarySE(data=d1, measurevar = 'accept', groupvars='deg_skew')
 
 p1 <- ggplot(d2, aes(deg_skew, accept, fill = deg_skew)) + geom_bar(position=position_dodge(), stat='identity') + 
   geom_errorbar(aes(ymin=accept - se, ymax = accept + se), width = .2, position=position_dodge(.9)) + 
-  theme_minimal() + xlab('Degree of Skewness') + ylab('Acceptance Rate') + expand_limits(y=1) + 
-  guides(fill=FALSE) + scale_fill_manual(values = colors) + scale_colour_manual(values=colors)
+  theme_minimal() + ylab('Acceptance Rate') + expand_limits(y=c(-.06, 1)) + 
+  theme(axis.text.x=element_blank(), axis.title.x=element_blank(), legend.justification = c(1,1), legend.position=c(1,1)) + #xlab('Degree of Skewness')
+  scale_fill_manual(values = colors, name = 'Skewness') + scale_colour_manual(values=colors, name = 'Skewness')
 
 # create summary - add interaction with valence of gamble
 d3 <- summarySE(data=d1, measurevar = 'accept', groupvars=c('valence','deg_skew'))
@@ -90,9 +91,9 @@ p2 <- ggplot(d6, aes(magval, accept, fill = deg_skew)) + geom_bar(position=posit
 
 p3 <- multiplot(p1, p2, layout = matrix(c(1,2,2,2), nrow=1, byrow=TRUE))
 
-#ggsave("deg_skew_plot1.pdf", plot = p3, device="pdf", path="figs/")
+#ggsave("deg_skew_plot2.pdf", plot = p3, device="pdf", path="figs/")
 
-#pdf('figs/deg_skew_plot2.pdf')
-#multiplot(p1, p2, layout = matrix(c(1,2,2,2), nrow=1, byrow=TRUE))
-#dev.off()
+pdf('figs/deg_skew_plot2.pdf')
+multiplot(p1, p2, layout = matrix(c(1,2,2,2), nrow=1, byrow=TRUE))
+dev.off()
 
