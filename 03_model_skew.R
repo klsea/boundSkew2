@@ -100,13 +100,15 @@ saveRDS(m4, here::here('output', 'm4.RDS'))
 
 # compare model 5 to model 4
 chi4 <- anova(m3,m4)
-chi <- matrix(nrow=4, ncol=3)
-chi[1,] <- c(chi1$Chisq[2], chi1$`Chi Df`[2], chi1$`Pr(>Chisq)`[2])
-chi[2,] <- c(chi2$Chisq[2], chi2$`Chi Df`[2], chi2$`Pr(>Chisq)`[2])
-chi[3,] <- c(chi3$Chisq[2], chi3$`Chi Df`[2], chi3$`Pr(>Chisq)`[2])
-chi[4,] <- c(chi4$Chisq[2], chi4$`Chi Df`[2], chi4$`Pr(>Chisq)`[2])
+
+# save chi squares from model comparison
+chi <- matrix(nrow=4, ncol=4)
+chi[1,] <- c(chi1$Chisq[2], chi1$`Chi Df`[2], chi1$`Pr(>Chisq)`[2], nrow(d0))
+chi[2,] <- c(chi2$Chisq[2], chi2$`Chi Df`[2], chi2$`Pr(>Chisq)`[2], nrow(d0))
+chi[3,] <- c(chi3$Chisq[2], chi3$`Chi Df`[2], chi3$`Pr(>Chisq)`[2], nrow(d0))
+chi[4,] <- c(chi4$Chisq[2], chi4$`Chi Df`[2], chi4$`Pr(>Chisq)`[2], nrow(d0))
 chi<-as.data.frame(chi)
-colnames(chi) <- c('chisq', 'df', 'pval')
+colnames(chi) <- c('chisq', 'df', 'pval', 'n')
 write.csv(chi, here::here('output', 's2_chi_squared.csv'))
 rm(chi1,chi2,chi3,chi4)
 
