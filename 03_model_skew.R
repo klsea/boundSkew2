@@ -82,6 +82,17 @@ saveRDS(m2, here::here('output', 'm2.RDS'))
 # compare model 2 to baseline
 chi2 <- anova(b1.1,m2)
 
+## follow-up t-tests
+d4 <- summarySE(d1, 'accept', groupvars = c('ID', 'deg_skew', 'valence'))
+d4$skew_valence <- interaction(d4$deg_skew, d4$valence)
+d5 <- spread(d4[,c(1,9,5)], 'skew_valence', 'accept')
+m1_follow_neutral <- pairedttable(d5[c(1,2:4)], colnames(d5[2:4]))
+m1_follow_gain <- pairedttable(d5[c(1,5:7)], colnames(d5[5:7]))
+m1_follow_loss <- pairedttable(d5[c(1,8:10)], colnames(d5[8:10]))
+list.save(m1_follow_neutral, here::here('output', 'm1_follow_neutral.rds'))
+list.save(m1_follow_gain, here::here('output', 'm1_follow_gain.rds'))
+list.save(m1_follow_loss, here::here('output', 'm1_follow_loss.rds'))
+rm(d4, d5, m1_follow_neutral, m1_follow_gain, m1_follow_loss)
 
 # model 3 - interaction between mag and val
 m3 <- glmer(accept ~ deg_skew * magval + (1 | ID), data = d1, family = binomial(link = logit), nAGQ = 1, 
@@ -91,6 +102,25 @@ saveRDS(m3, here::here('output', 'm3.RDS'))
 
 # compare model 3 to baseline
 chi3 <- anova(m1, m3)
+
+## follow-up t-tests
+d8 <- summarySE(d1, 'accept', groupvars = c('ID', 'deg_skew', 'magval'))
+d8$skew_magval <- interaction(d8$deg_skew, d8$magval)
+d9 <- spread(d8[,c(1,9,5)], 'skew_magval', 'accept')
+#neutral
+m3_follow_neutral_0 <- pairedttable(d9[c(1,2:4)], colnames(d9[2:4]))
+list.save(m3_follow_neutral_0, here::here('output', 'm3_follow_neutral_0.rds'))
+#losses
+m3_follow_loss_5 <- pairedttable(d9[c(1,5:7)], colnames(d9[5:7]))
+list.save(m3_follow_loss_5, here::here('output', 'm3_follow_loss_5.rds'))
+m3_follow_loss_05 <- pairedttable(d9[c(1,8:10)], colnames(d9[8:10]))
+list.save(m3_follow_loss_05, here::here('output', 'm3_follow_loss_05.rds'))
+#gains
+m3_follow_gain_5 <- pairedttable(d9[c(1,11:13)], colnames(d9[11:13]))
+list.save(m3_follow_gain_5, here::here('output', 'm3_follow_gain_5.rds'))
+m3_follow_gain_05 <- pairedttable(d9[c(1,14:16)], colnames(d9[14:16]))
+list.save(m3_follow_gain_05, here::here('output', 'm3_follow_gain_05.rds'))
+rm(d8, d9, m3_follow_neutral_0, m3_follow_loss_5, m3_follow_loss_05, m3_follow_gain_5, m3_follow_gain_05)
 
 # model 4 - add Age
 m4 <- glmer(accept ~ deg_skew * magval + Age + (1 | ID), data = d1, family = binomial(link = logit), nAGQ = 1, 
@@ -108,7 +138,7 @@ chi[2,] <- c(chi2$Chisq[2], chi2$`Chi Df`[2], chi2$`Pr(>Chisq)`[2], nrow(d0))
 chi[3,] <- c(chi3$Chisq[2], chi3$`Chi Df`[2], chi3$`Pr(>Chisq)`[2], nrow(d0))
 chi[4,] <- c(chi4$Chisq[2], chi4$`Chi Df`[2], chi4$`Pr(>Chisq)`[2], nrow(d0))
 chi<-as.data.frame(chi)
-colnames(chi) <- c('chisq', 'df', 'pval', 'n')
+colnames(chi) <- c('chi', 'df', 'pval', 'n')
 write.csv(chi, here::here('output', 's2_chi_squared.csv'))
 rm(chi1,chi2,chi3,chi4)
 
