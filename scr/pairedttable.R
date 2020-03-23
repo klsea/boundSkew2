@@ -38,6 +38,6 @@ pairedttable <- function(data, var.names){
 }
 
 
-#data <- d1
-#var.names <- colnames(d1)[3:8]
+data <- d1[3:8]
+var.names <- colnames(d1)[3:8]
 #ttable(d3,colnames(d1)[3:8])
