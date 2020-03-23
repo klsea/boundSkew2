@@ -12,6 +12,7 @@ source('../06_graph_affect.R')
 ```{r graph, echo = FALSE}
 affect
 ```
+
 ## Comparison of conditions
 ```{r stats, echo = FALSE, comment=''}
 summary(affectaov)
