@@ -18,8 +18,8 @@ source(here::here('scr', 'multiplot.R'))
 # set hard-coded variables
 
 # load data
-dt <- read.csv(here("data", "bound_skew2_data.csv"))
-dict <- read.csv(here("data", "bound_skew2_data_dictionary.csv"))
+dt <- read.csv(here::here("data", "bound_skew2_data.csv"))
+dict <- read.csv(here::here("data", "bound_skew2_data_dictionary.csv"))
 
 # isolate AVI data
 Sys.setlocale('LC_ALL','C')
