@@ -46,3 +46,7 @@ num1 <- ggplot(d3, (aes(x=Numeracy))) + geom_histogram(binwidth = 0.5) +
   geom_vline(aes(xintercept=mean(Numeracy, na.rm=T)), color="red", linetype="dashed", size=1)
 
 num2 <- ggplot(d3, aes(Age, Numeracy)) + geom_point() + geom_smooth(method=lm)
+
+# make table
+d4 <- merge(d1, d3, by = c("ID", "Age"))
+write.csv(d4, here::here('output', 'cog2.csv'), row.names = FALSE)
