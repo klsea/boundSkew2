@@ -50,6 +50,8 @@ d2$names <- revalue(d2$names, c('ha' = 'high arousal','han' = 'high arousal - ne
 d2$names <- factor(d2$names, levels =c('low arousal', 'low arousal - negative', 'low arousal - positive', 
                                           'high arousal','high arousal - negative', 'high arousal - positive'))
 
+write.csv(d2, here::here('output', 'affect2.csv'), row.names = FALSE)
+
 affect <- ggplot(d2, aes(names, Mean, fill = names)) + geom_bar(stat='identity') + annotate("text", x=1, y=0, label="Never") + 
   annotate("text", x=1, y=5, label="All the time") + 
   geom_errorbar(aes(ymin = Mean-SE, ymax = Mean + SE), width = .2, position=position_dodge(.9)) +
