@@ -93,7 +93,7 @@ p3 <- multiplot(p1, p2, layout = matrix(c(1,2,2,2), nrow=1, byrow=TRUE))
 
 #ggsave("deg_skew_plot2.pdf", plot = p3, device="pdf", path="figs/")
 
-pdf('figs/deg_skew_plot2.pdf')
+pdf('figs/deg_skew_plot2.pdf', width = 12, height = 6)
 multiplot(p1, p2, layout = matrix(c(1,2,2,2), nrow=1, byrow=TRUE))
 dev.off()
 
