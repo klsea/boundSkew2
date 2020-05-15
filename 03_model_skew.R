@@ -59,6 +59,7 @@ saveRDS(b1.1, here::here('output', 'baseline.RDS'))
 d2 <- summarySE(d1, 'accept', groupvars = c('ID', 'deg_skew'))
 d3 <- spread(d2[,c(1,2,4)], 'deg_skew', 'accept')
 b1_follow <- pairedttable(d3, colnames(d3[2:4]))
+names(b1_follow)[3] <- 'pval'
 list.save(b1_follow, here::here('output', 'b1_follow.rds'))
 rm(d2,d3, b1_follow)
 
