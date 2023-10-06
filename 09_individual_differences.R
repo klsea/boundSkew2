@@ -7,17 +7,17 @@ library(here)
 library(Hmisc)
 
 # load source functions
-source(here('scr', 'isolate_skew.R'))
-source(here('scr', 'isolate_measure.R'))
-source(here('scr', 'clean_skew.R'))
-source(here('scr', 'count_skew.R'))
-source(here('scr', 'corrTableCI.R'))
+source(here::here('scr', 'isolate_skew.R'))
+source(here::here('scr', 'isolate_measure.R'))
+source(here::here('scr', 'clean_skew.R'))
+source(here::here('scr', 'count_skew.R'))
+source(here::here('scr', 'corrTableCI.R'))
 
 # set hard-coded variables
 
 # load data
-dt <- read.csv(here("data", "bound_skew2_data.csv"))
-dict <- read.csv(here("data", "bound_skew2_data_dictionary.csv"))
+dt <- read.csv(here::here("data", "bound_skew2_data.csv"))
+dict <- read.csv(here::here("data", "bound_skew2_data_dictionary.csv"))
 
 # separate skew
 d0 <- isolate_skew(dt,c(1,2),grep('X0', colnames(dt))[1]:grep('CATCH2.4', colnames(dt))) # no symmetric trials here
@@ -87,11 +87,31 @@ d7 <- merge(d6, d2, by = 'ID')
 rm(d1,d2,d6)
 
 # correlations
-end <- ncol(d7)-1
-s2_corr <- rcorr(as.matrix(d7[c(5:20, 22:end)]))
+end <- ncol(d7)
+s2_corr <- rcorr(as.matrix(d7[c(2, 5:20, 22:end)]))
 saveRDS(s2_corr, here('output', 's2_corr.RDS'))
-s2_corrCI <- corrTableCI(d7[c(5:20, 22:end)])
+s2_corrCI <- corrTableCI(d7[c(2, 5:20, 22:end)])
 saveRDS(s2_corrCI, here('output', 's2_corrCI.RDS'))
+write.csv(s2_corrCI, "cortable.csv")
+write.csv(s2_corr$r, "corrtabler.csv")
+
+write.csv(s2_corr$P, "pvalue.csv")
+
+
+
+flattenCorrMatrix <- function(cormat, pmat) {
+  ut <- upper.tri(cormat)
+  data.frame(
+    row = rownames(cormat)[row(cormat)[ut]],
+    column = rownames(cormat)[col(cormat)[ut]],
+    cor  =(cormat)[ut],
+    p = pmat[ut]
+  )
+}
+flat<-flattenCorrMatrix(s2_corr$r, s2_corr$P)
+write.csv(flat, "flatstudy2.csv")
+
+
 
 # models - strategy
 d7$magval <- interaction(d7$magnitude, d7$valence)

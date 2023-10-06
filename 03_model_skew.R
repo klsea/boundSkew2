@@ -7,6 +7,9 @@ library(lme4)
 library(gdata)
 library(tidyr)
 library(rlist)
+library(sjPlot)
+library(sjmisc)
+library(sjlabelled)
 
 # load source functions
 source(here::here('scr', 'isolate_skew.R'))
@@ -45,12 +48,12 @@ d1$magval <- drop.levels(d1$magval)
 d1$magval <- factor(d1$magval, levels = c('neutral.0', 'loss.5', 'loss.0.5', 'gain.0.5', 'gain.5'))
 
 # baseline - only degree of skew
-b1 <- glmer(accept ~ deg_skew + (1 + Age | ID), data = d1, family = binomial(link = logit), nAGQ = 1, 
+b1 <- glmer(accept ~ deg_skew + (1 + Age | ID), data = d1, family = binomial(link = "logit"), nAGQ = 1, 
                control=glmerControl(optimizer='bobyqa'))
 summary(b1, correlation = FALSE)
 
 # boundary fit - remove age from random effects
-b1.1 <- glmer(accept ~ deg_skew + (1 | ID), data = d1, family = binomial(link = logit), nAGQ = 1, 
+b1.1 <- glmer(accept ~ deg_skew + (1 | ID), data = d1, family = binomial(link = "logit"), nAGQ = 1, 
             control=glmerControl(optimizer='bobyqa'))
 summary(b1.1, correlation = FALSE)
 saveRDS(b1.1, here::here('output', 'baseline.RDS'))
@@ -64,7 +67,7 @@ list.save(b1_follow, here::here('output', 'b1_follow.rds'))
 rm(d2,d3, b1_follow)
 
 # model 1 - add valence
-m1 <- glmer(accept ~ deg_skew * valence + (1 | ID), data = d1, family = binomial(link = logit), nAGQ = 1, 
+m1 <- glmer(accept ~ deg_skew * valence + (1 | ID), data = d1, family = binomial(link = "logit"), nAGQ = 1, 
             control=glmerControl(optimizer='bobyqa'))
 summary(m1, correlation = FALSE)
 saveRDS(m1, here('output', 'm1.RDS'))
@@ -75,7 +78,7 @@ chi1 <- anova(b1.1,m1)
 # Does magnitude make a difference?
 
 # model 2 -  magnitude instead of valence
-m2 <- glmer(accept ~ deg_skew  * magnitude + (1 | ID), data = d1, family = binomial(link = logit), nAGQ = 1, 
+m2 <- glmer(accept ~ deg_skew  * magnitude + (1 | ID), data = d1, family = binomial(link = "logit"), nAGQ = 1, 
               control=glmerControl(optimizer='bobyqa'))
 summary(m2, correlation = FALSE)
 saveRDS(m2, here::here('output', 'm2.RDS'))
@@ -96,7 +99,7 @@ list.save(m1_follow_loss, here::here('output', 'm1_follow_loss.rds'))
 rm(d4, d5, m1_follow_neutral, m1_follow_gain, m1_follow_loss)
 
 # model 3 - interaction between mag and val
-m3 <- glmer(accept ~ deg_skew * magval + (1 | ID), data = d1, family = binomial(link = logit), nAGQ = 1, 
+m3 <- glmer(accept ~ deg_skew * magval + (1 | ID), data = d1, family = binomial(link = "logit"), nAGQ = 1, 
             control=glmerControl(optimizer='bobyqa'))
 summary(m3, correlation = FALSE)
 saveRDS(m3, here::here('output', 'm3.RDS'))
@@ -124,7 +127,7 @@ list.save(m3_follow_gain_05, here::here('output', 'm3_follow_gain_05.rds'))
 rm(d8, d9, m3_follow_neutral_0, m3_follow_loss_5, m3_follow_loss_05, m3_follow_gain_5, m3_follow_gain_05)
 
 # model 4 - add Age
-m4 <- glmer(accept ~ deg_skew * magval + Age + (1 | ID), data = d1, family = binomial(link = logit), nAGQ = 1, 
+m4 <- glmer(accept ~ deg_skew * magval + Age + (1 | ID), data = d1, family = binomial(link = "logit"), nAGQ = 1, 
             control=glmerControl(optimizer='bobyqa'))
 summary(m4, correlation = FALSE)
 saveRDS(m4, here::here('output', 'm4.RDS'))
@@ -134,12 +137,15 @@ chi4 <- anova(m3,m4)
 
 # save chi squares from model comparison
 chi <- matrix(nrow=4, ncol=4)
-chi[1,] <- c(chi1$Chisq[2], chi1$`Chi Df`[2], chi1$`Pr(>Chisq)`[2], nrow(d0))
-chi[2,] <- c(chi2$Chisq[2], chi2$`Chi Df`[2], chi2$`Pr(>Chisq)`[2], nrow(d0))
-chi[3,] <- c(chi3$Chisq[2], chi3$`Chi Df`[2], chi3$`Pr(>Chisq)`[2], nrow(d0))
-chi[4,] <- c(chi4$Chisq[2], chi4$`Chi Df`[2], chi4$`Pr(>Chisq)`[2], nrow(d0))
+chi[1,] <- c(chi1$Chisq[2], chi1$`Df`[2], chi1$`Pr(>Chisq)`[2], nrow(d0))
+chi[2,] <- c(chi2$Chisq[2], chi2$`Df`[2], chi2$`Pr(>Chisq)`[2], nrow(d0))
+chi[3,] <- c(chi3$Chisq[2], chi3$`Df`[2], chi3$`Pr(>Chisq)`[2], nrow(d0))
+chi[4,] <- c(chi4$Chisq[2], chi4$`Df`[2], chi4$`Pr(>Chisq)`[2], nrow(d0))
 chi<-as.data.frame(chi)
 colnames(chi) <- c('chi', 'df', 'pval', 'n')
 write.csv(chi, here::here('output', 's2_chi_squared.csv'))
 rm(chi1,chi2,chi3,chi4)
 
+
+#table
+tab_model(b1, m1, m2, m3, m4, file = "study2table.doc")
