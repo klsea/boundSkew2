@@ -7,10 +7,10 @@ library(ggplot2)
 library(gdata)
 
 # load source functions
-source(here('scr', 'isolate_skew.R'))
-source(here('scr', 'clean_skew.R'))
-source(here('scr', 'SummarySE.R'))
-source(here('scr', 'multiplot.R'))
+source(here::here('scr', 'isolate_skew.R'))
+source(here::here('scr', 'clean_skew.R'))
+source(here::here('scr', 'SummarySE.R'))
+source(here::here('scr', 'multiplot.R'))
 
 # set hard-coded variables
 
@@ -33,18 +33,27 @@ d1$magnitude <- factor(d1$magnitude)
 # emulate color palette from study 1
 colors <- c('#7CAE00', '#00BFC4', '#C77CFF')
 
+# size graph constants
+lg = 26 # text size
+md = 20
+sm = 14
+
 # age effects on acceptance rates
 ggplot(d1, aes(Age, accept, colour = deg_skew, fill = deg_skew)) + geom_smooth(method=lm) +
   theme(legend.position = 'top') + facet_grid(magnitude ~ valence) + 
   scale_fill_manual(values = colors) + scale_colour_manual(values=colors)
+
+#exploratory age effects on acceptance rates
+ggplot(d1, aes(Age, accept, colour=deg_skew, fill = deg_skew)) + geom_smooth(method=lm) +
+  theme(legend.position = 'top')+ expand_limits(y=c(0,1))+ylab("Skewed Gamble Choice Rate")+labs(color= 'Degree of Skew', fill='Degree of Skew')
 
 # create summary - main effect of degree of skewness
 d2 <- summarySE(data=d1, measurevar = 'accept', groupvars='deg_skew')
 
 p1 <- ggplot(d2, aes(deg_skew, accept, fill = deg_skew)) + geom_bar(position=position_dodge(), stat='identity') + 
   geom_errorbar(aes(ymin=accept - se, ymax = accept + se), width = .2, position=position_dodge(.9)) + 
-  theme_minimal() + ylab('Acceptance Rate') + expand_limits(y=c(-.06, 1)) + 
-  theme(axis.text.x=element_blank(), axis.title.x=element_blank(), legend.justification = c(1,1), legend.position=c(1,1)) + #xlab('Degree of Skewness')
+  theme_minimal() + ylab('Skewed Gamble Choice Rate') + expand_limits(y=c(-.06, 1)) + 
+  theme(axis.text.x=element_blank(), axis.title.x=element_blank(), legend.justification = c(1,1), legend.position=c(1,1), legend.title = element_text(size = md), legend.text = element_text(size = sm), axis.title.y = element_text(size = lg), axis.text.y = element_text(size = md)  ) + #xlab('Degree of Skewness')
   scale_fill_manual(values = colors, name = 'Skewness') + scale_colour_manual(values=colors, name = 'Skewness')
 
 # create summary - add interaction with valence of gamble
@@ -86,7 +95,7 @@ d6 <- summarySE(data=d1, measurevar = 'accept', groupvars=c('magval', 'deg_skew'
 p2 <- ggplot(d6, aes(magval, accept, fill = deg_skew)) + geom_bar(position=position_dodge(), stat='identity') + 
   geom_errorbar(aes(ymin=accept - se, ymax = accept + se), width = .2, position=position_dodge(.9)) + 
   scale_fill_discrete(name = 'Degree of Skewness') + xlab('Valence by Magnitude Interaction') +
-  theme_minimal() +theme(legend.position = 'none', axis.title.y = element_blank()) + expand_limits(y=1) + 
+  theme_minimal() +theme(axis.title.y = element_blank(), axis.text.y = element_text(size = md),legend.position = 'none', axis.title.x = element_text(size = lg), axis.text.x = element_text(size = md)) + 
   scale_fill_manual(values = colors) + scale_colour_manual(values=colors)
 
 p3 <- multiplot(p1, p2, layout = matrix(c(1,2,2,2), nrow=1, byrow=TRUE))
